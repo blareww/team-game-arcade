@@ -16,6 +16,33 @@ void printHUD() {
     std::cout << "------------------------------------------\n";
 }
 
+void anomalyEvent() {
+    int roll = rand() % 20 + 1;
+    std::cout << "\nБросок D20: " << roll << "\n";
+
+    if (roll == 20) {
+        score += 500;
+        resources += 50;
+        std::cout << "Джекпот! Найден редкий артефакт: "
+                  << "+500 очков, +50 ресурсов.\n";
+    } else if (roll >= 11) {
+        score += 100;
+        resources += 15;
+        std::cout << "Удачная вылазка: +100 очков, +15 ресурсов.\n";
+    } else if (roll >= 6) {
+        std::cout << "Аномалия затихла. Ты выбрался без потерь.\n";
+    } else {
+        int damage = (roll == 1) ? 50 : 25;
+        hp -= damage;
+        if (hp < 0) hp = 0;
+
+        std::cout << "Выброс! Потеряно " << damage << " здоровья.\n";
+        if (hp == 0) {
+            std::cout << "Ты погиб в аномалии.\n";
+        }
+    }
+}
+
 int main() {
     srand(time(NULL));
 
@@ -48,9 +75,8 @@ int main() {
                 break;
 
             case 3:
-                // Разработчик 3: случайное событие (Issue #3)
-                std::cout << "\nМодуль аномалий пока не готов.\n";
-                break;
+    		anomalyEvent();
+    		break;
 
             case 0:
                 hp = 0;
