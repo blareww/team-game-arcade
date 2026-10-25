@@ -8,6 +8,34 @@ int resources = 50;
 int score = 0;
 int turn = 1;
 
+void highRiskRaid() {
+    int chance = rand() % 100;
+
+    if (chance < 50) {
+        int reward = 200 + rand() % 301;
+        int loot = 10 + rand() % 41;
+
+        score += reward;
+        resources += loot;
+
+        std::cout << "\nРейд успешен! Ты нашёл тайник сталкера!\n";
+        std::cout << "Получено очков: " << reward << "\n";
+        std::cout << "Найдено ресурсов: " << loot << "\n";
+    }
+    else {
+        int damage = 30 + rand() % 21;
+
+        hp -= damage;
+
+        if (hp < 0) {
+            hp = 0;
+        }
+
+        std::cout << "\nРейд провален! Ты попал под выброс!\n";
+        std::cout << "Потеряно здоровья: " << damage << "\n";
+    }
+}
+
 void printHUD() {
     std::cout << "\n========== ХОД: " << turn
               << " | СЧЁТ: " << score << " ==========\n";
@@ -64,10 +92,9 @@ int main() {
         }
 
         switch (choice) {
-            case 1:
-                // Разработчик 1: рискованный рейд (Issue #1)
-                std::cout << "\nМодуль рискованного рейда пока не готов.\n";
-                break;
+                case 1:
+    highRiskRaid();
+    break;
 
             case 2:
                 // Разработчик 2: лечение (Issue #2)
