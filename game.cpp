@@ -71,6 +71,33 @@ void anomalyEvent() {
     }
 }
 
+void healAtCamp() {
+    const int cost = 20;
+    const int healing = 30;
+
+    if (hp <= 0) {
+        std::cout << "\nПогибшего персонажа нельзя лечить.\n";
+        return;
+    }
+
+    if (hp >= 100) {
+        std::cout << "\nЗдоровье уже полное. Ресурсы не потрачены.\n";
+        return;
+    }
+
+    if (resources < cost) {
+        std::cout << "\nНедостаточно ресурсов: нужно 20.\n";
+        return;
+    }
+
+    int restored = (100 - hp < healing) ? 100 - hp : healing;
+    hp += restored;
+    resources -= cost;
+
+    std::cout << "\nВосстановлено " << restored
+              << " HP. Потрачено " << cost << " ресурсов.\n";
+}
+
 int main() {
     srand(time(NULL));
 
@@ -97,9 +124,8 @@ int main() {
     break;
 
             case 2:
-                // Разработчик 2: лечение (Issue #2)
-                std::cout << "\nМодуль лагеря пока не готов.\n";
-                break;
+                 healAtCamp();
+                 break;
 
             case 3:
     		anomalyEvent();
