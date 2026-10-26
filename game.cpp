@@ -71,23 +71,25 @@ void anomalyEvent() {
     }
 }
 
-void healAtCamp() {
+// Возвращает true, если лечение действительно произошло,
+// и false, если действие не выполнено (мёртв / полное HP / нет ресурсов).
+bool healAtCamp() {
     const int cost = 20;
     const int healing = 30;
 
     if (hp <= 0) {
         std::cout << "\nПогибшего персонажа нельзя лечить.\n";
-        return;
+        return false;
     }
 
     if (hp >= 100) {
         std::cout << "\nЗдоровье уже полное. Ресурсы не потрачены.\n";
-        return;
+        return false;
     }
 
     if (resources < cost) {
         std::cout << "\nНедостаточно ресурсов: нужно 20.\n";
-        return;
+        return false;
     }
 
     int restored = (100 - hp < healing) ? 100 - hp : healing;
@@ -96,6 +98,7 @@ void healAtCamp() {
 
     std::cout << "\nВосстановлено " << restored
               << " HP. Потрачено " << cost << " ресурсов.\n";
+    return true;
 }
 
 int main() {
@@ -118,29 +121,33 @@ int main() {
             break;
         }
 
+        bool actionPerformed = true;   // засчитывать ли ход
+
         switch (choice) {
-                case 1:
-    highRiskRaid();
-    break;
+            case 1:
+                highRiskRaid();
+                break;
 
             case 2:
-                 healAtCamp();
-                 break;
+                actionPerformed = healAtCamp();   // false → ход не засчитывается
+                break;
 
             case 3:
-    		anomalyEvent();
-    		break;
+                anomalyEvent();
+                break;
 
             case 0:
                 hp = 0;
+                actionPerformed = false;
                 break;
 
             default:
                 std::cout << "\nНеизвестная команда!\n";
+                actionPerformed = false;
                 break;
         }
 
-        if (hp > 0) {
+        if (hp > 0 && actionPerformed) {
             turn++;
             score += 10;
         }
